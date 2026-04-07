@@ -2,5 +2,5 @@ POST http://127.0.0.1:5000/ips
 Content-Type: application/json
 
 {
-    "ip": "6.8.8.8"
+    "ip": "1.8.8.8"
 }

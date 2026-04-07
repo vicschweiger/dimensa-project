@@ -12,6 +12,7 @@ db = client.dimensa_project
 ips_collection = db.ips
 
 app = Flask(__name__)
+app.json.sort_keys = False
 
 @app.route('/ips', methods=['POST'])
 def receive_ip():
@@ -30,13 +31,39 @@ def receive_ip():
     if saved_ip:
         return jsonify({"mensagem": f"O IP {received_ip} já existe no banco de dados."}), 200
     
-    else:
-        ips_collection.insert_one({"ip": received_ip})  
+    try:
+        api_response = requests.get(f"https://ipwhois.app/json/{received_ip}")
+        raw_data = api_response.json()
+        
+        if raw_data.get("success") is False:
+             return jsonify({"erro": f"IP {received_ip} inválido ou não encontrado na API externa."}), 404
 
-        return jsonify({
-            "mensagem": "Sucesso! O banco de dados foi conectado e salvou o IP corretamente.",
-            "ip_que_voce_enviou": received_ip
-        }), 200
+        cleared_data = {
+            "ip": received_ip,
+            "raw_data": raw_data,
+            "data": {
+                "type": raw_data.get("type"),
+                "continent": raw_data.get("continent"),
+                "continent_code": raw_data.get("continent_code"),
+                "country": raw_data.get("country"),
+                "country_code": raw_data.get("country_code"),
+                "region": raw_data.get("region"),
+                "region_code": raw_data.get("region_code"),
+                "city": raw_data.get("city"),
+                "capital": raw_data.get("capital") 
+            }
+        }
+
+        ips_collection.insert_one(cleared_data)
+        
+        del cleared_data["_id"]
+
+        return jsonify(cleared_data), 201
+        
+    except Exception as e:
+        return jsonify({"erro": f"Erro de conexão com a API externa: {str(e)}"}), 500
+
+
 
 @app.route('/ips', methods=['GET'])
 def list_ips():
