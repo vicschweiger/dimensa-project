@@ -25,11 +25,40 @@ def receive_ip():
     if not received_ip:
         return jsonify({"erro": "O campo 'ip' está vazio."}), 400
     
-    ips_collection.insert_one({"ip": received_ip})  
+    saved_ip = ips_collection.find_one({"ip": received_ip})
 
+    if saved_ip:
+        return jsonify({"mensagem": f"O IP {received_ip} já existe no banco de dados."}), 200
+    
+    else:
+        ips_collection.insert_one({"ip": received_ip})  
+
+        return jsonify({
+            "mensagem": "Sucesso! O banco de dados foi conectado e salvou o IP corretamente.",
+            "ip_que_voce_enviou": received_ip
+        }), 200
+
+@app.route('/ips', methods=['GET'])
+def list_ips():
+    page = request.args.get('page', 1, type=int)
+    filter_ip = request.args.get('filter_ip', type=str)
+    
+    limit = 15
+    gap = (page - 1) * limit
+    
+    query = {}
+
+    if filter_ip:
+        query["ip"] = {"$regex": f"^{filter_ip}"}
+        
+    db_results = ips_collection.find(query, {"_id": 0, "raw_data": 0}).skip(gap).limit(limit)
+    
+    ips_list = []
+    for item in db_results:
+        ips_list.append(item)
+        
     return jsonify({
-        "mensagem": "Sucesso! O banco de dados foi conectado e salvou o IP corretamente.",
-        "ip_que_voce_enviou": received_ip
+        "ips": ips_list
     }), 200
 
 if __name__ == '__main__':
