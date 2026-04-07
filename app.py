@@ -1,5 +1,6 @@
 import os
 import requests
+from functools import wraps
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 from pymongo import MongoClient
@@ -10,11 +11,27 @@ mongo_uri = os.getenv("MONGO_URI")
 client = MongoClient(mongo_uri)
 db = client.dimensa_project
 ips_collection = db.ips
+secret_token = os.getenv("SECRET_TOKEN")
 
 app = Flask(__name__)
 app.json.sort_keys = False
 
+def mandatory_token(f):
+    @wraps(f)
+    def func(*args, **kwargs):
+        received_token = request.headers.get('Authorization')
+        
+        if not received_token:
+            return jsonify({"erro": "Acesso negado. Token não fornecido."}), 401
+            
+        if received_token != f"Bearer {secret_token}":
+            return jsonify({"erro": "Token inválido ou expirado."}), 403
+            
+        return f(*args, **kwargs)
+    return func
+
 @app.route('/ips', methods=['POST'])
+@mandatory_token
 def receive_ip():
     query = request.get_json(silent=True)
     received_ip = query.get('ip')
@@ -66,6 +83,7 @@ def receive_ip():
 
 
 @app.route('/ips', methods=['GET'])
+@mandatory_token
 def list_ips():
     page = request.args.get('page', 1, type=int)
     filter_ip = request.args.get('filter_ip', type=str)

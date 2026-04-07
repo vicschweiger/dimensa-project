@@ -1,6 +1,7 @@
 POST http://127.0.0.1:5000/ips
 Content-Type: application/json
+Authorization: Bearer dimensa_aprovou
 
 {
-    "ip": "1.8.8.8"
+    "ip": "35.8.8.2"
 }
