@@ -1,4 +1,4 @@
-POST http://172.18.0.3:5000/ips
+POST http://127.0.0.1:5000/ips
 Content-Type: application/json
 Authorization: Bearer dimensa_aprovou
 

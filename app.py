@@ -24,7 +24,7 @@ def mandatory_token(f):
             return jsonify({"erro": "Acesso negado. Token não fornecido."}), 401
             
         if received_token != f"Bearer {secret_token}":
-            return jsonify({"erro": "Token inválido ou expirado."}), 403
+            return jsonify({"erro": "Token invalido ou expirado."}), 403
             
         return f(*args, **kwargs)
     return func
@@ -36,11 +36,11 @@ def receive_ip():
     received_ip = query.get('ip')
 
     if not query:
-        return jsonify({"erro": "Corpo da requisição vazio."}), 400
+        return jsonify({"erro": "Corpo da requisicao vazio."}), 400
         
     
     if not received_ip:
-        return jsonify({"erro": "O campo 'ip' está vazio."}), 400
+        return jsonify({"erro": "O 'IP' esta vazio."}), 400
     
     saved_ip = ips_collection.find_one({"ip": received_ip})
 
@@ -78,7 +78,7 @@ def receive_ip():
         return jsonify(cleared_data), 201
         
     except Exception as e:
-        return jsonify({"erro": f"Erro de conexão com a API externa: {str(e)}"}), 500
+        return jsonify({"erro": f"Erro de conexao com a API externa: {str(e)}"}), 500
 
 
 
