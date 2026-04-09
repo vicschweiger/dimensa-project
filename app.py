@@ -1,5 +1,4 @@
-import os
-import requests
+import os, requests
 from functools import wraps
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
@@ -46,14 +45,15 @@ def receive_ip():
     saved_ip = ips_collection.find_one({"ip": received_ip})
 
     if saved_ip:
-        return jsonify({"mensagem": f"O IP {received_ip} já existe no banco de dados."}), 200
+        del saved_ip["_id"]
+        return jsonify(saved_ip), 200
     
     try:
         api_response = requests.get(f"https://ipwhois.app/json/{received_ip}")
         raw_data = api_response.json()
         
         if raw_data.get("success") is False:
-             return jsonify({"erro": f"IP {received_ip} inválido ou não encontrado na API externa."}), 404
+             return jsonify({"erro": f"IP {received_ip} invalido ou nao encontrado na API externa."}), 404
 
         cleared_data = {
             "ip": received_ip,

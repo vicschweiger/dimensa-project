@@ -1,0 +1,2 @@
+GET http://127.0.0.1:5000/ips?filter_ip=8
+Authorization: Bearer dimensa_aprovou

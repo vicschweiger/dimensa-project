@@ -3,5 +3,5 @@ Content-Type: application/json
 Authorization: Bearer dimensa_aprovou
 
 {
-    "ip": "35.8.8.2"
+    "ip": "8.6.8.8"
 }
