@@ -100,6 +100,6 @@ Escalabilidade: A separação entre API e Worker permite que o processamento de 
 
 <br>
 
-## Notas de Desenvolvimento
+## 📋 Notas de Desenvolvimento
 
 O projeto foi desenvolvido utilizando GitHub Codespaces para garantir agilidade e um ambiente de desenvolvimento padronizado durante o processo. Para assegurar a portabilidade total, o sistema foi validado e testado localmente em ambiente Windows/Linux via Docker, garantindo que o mapeamento de portas e a orquestração dos containers funcionem perfeitamente em qualquer host ou sistema.
