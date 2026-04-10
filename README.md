@@ -61,7 +61,7 @@ Por questões de segurança, o arquivo .env não foi versionado.
 
 No terminal, dentro da pasta do projeto, execute:
 
-`docker-compose up --build`
+    docker-compose up --build
 
 Aguarde a inicialização. A API estará disponível em: http://localhost:8000
 
@@ -77,7 +77,7 @@ Na pasta raiz, existem arquivos com a extensão .http que podem ser usados com a
 
 >test_filter.http: Busca IPs específicos por número.
 
-    Nota: Todas as requisições requerem o token de autorização: Bearer dimensa_aprovou.
+`Nota: Todas as requisições requerem o token de autorização: Bearer dimensa_aprovou.`
 
 <br>
 
