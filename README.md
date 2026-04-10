@@ -23,6 +23,7 @@ Este projeto é uma API desenvolvida em Python (Flask) para consulta e armazenam
 <br>
 
 ## 📂 Controle de Versão
+
 **Repositório:** [GitHub](https://github.com/vicschweiger/dimensa-project)
 
 **Status do Projeto:** Finalizado / Estável
@@ -46,6 +47,8 @@ A aplicação foi desenhada para ser escalável e segura:
 1. **Pré-requisitos**
 
 Ter o Docker e o Docker Compose instalados em sua máquina.
+
+Extensão REST Client no VS Code (recomendada para executar os arquivos de teste .http incluídos no corpo do projeto).
 
 <br>
 
@@ -75,9 +78,11 @@ Na pasta raiz, existem arquivos com a extensão .http que podem ser usados com a
 
 >test_get.http: Lista todos os IPs cadastrados (com paginação).
 
->test_filter.http: Busca IPs específicos por número.
+>test_filter.http: Busca e filtra IPs específicos por número.
 
-`Nota: Todas as requisições requerem o token de autorização: Bearer dimensa_aprovou.`
+`O SECRET_TOKEN padrão para este teste é "dimensa_aprovou", já preenchido no arquivo de exemplo (.env.example).`
+
+`Nota: Todas as requisições requerem o header Authorization: Bearer dimensa_aprovou.`
 
 <br>
 
@@ -85,6 +90,16 @@ Na pasta raiz, existem arquivos com a extensão .http que podem ser usados com a
 
 Porta 8000: Escolhida para evitar conflitos comuns com serviços de sistema na porta 5000.
 
-Mapeamento de Portas: Foi utilizado o mapeamento 8000:5000 no Docker Compose para garantir portabilidade entre diferentes sistemas operacionais.
+Mapeamento de Portas: Escolhida a porta 8000 para evitar conflitos comuns com serviços de sistema na porta 5000. Foi utilizado o mapeamento 8000:5000 no Docker Compose para garantir portabilidade entre diferentes sistemas operacionais.
+
+Isolamento de Ambiente: O uso de Docker garante que a aplicação rode exatamente da mesma forma em qualquer máquina, eliminando erros.
 
 Segurança: Implementação de autenticação via Token (Bearer) e isolamento de variáveis sensíveis.
+
+Escalabilidade: A separação entre API e Worker permite que o processamento de IPs seja feito de forma assíncrona, aumentando a performance da resposta ao usuário.
+
+<br>
+
+## Notas de Desenvolvimento
+
+O projeto foi desenvolvido utilizando GitHub Codespaces para garantir agilidade e um ambiente de desenvolvimento padronizado durante o processo. Para assegurar a portabilidade total, o sistema foi validado e testado localmente em ambiente Windows/Linux via Docker, garantindo que o mapeamento de portas e a orquestração dos containers funcionem perfeitamente em qualquer host ou sistema.
