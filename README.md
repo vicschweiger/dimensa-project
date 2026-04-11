@@ -72,6 +72,12 @@ Aguarde a inicialização. A API estará disponível em: http://localhost:8000
 
 ## 🧪 Como Testar
 
+Você pode testar a API de diversas formas, dependendo da ferramenta de sua preferência.
+
+<br>
+
+### Opção 1: Via REST Client (Recomendado)
+
 Na pasta raiz, existem arquivos com a extensão .http que podem ser usados com a extensão REST Client do VS Code:
 
 >test_post.http: Envia um IP para cadastro, processamento ou consulta.
@@ -79,6 +85,44 @@ Na pasta raiz, existem arquivos com a extensão .http que podem ser usados com a
 >test_get.http: Lista todos os IPs cadastrados (com paginação).
 
 >test_filter.http: Busca e filtra IPs específicos por número.
+
+<br>
+
+### Opção 2: Via Postman ou Insomnia
+
+Crie uma requisição com os seguintes parâmetros:
+
+```
+
+URL: http://localhost:8000/ips
+
+Método: POST ou GET
+
+Header: Authorization | Valor: Bearer dimensa_aprovou
+
+Body (para POST): Em formato raw/json, insira {"ip": "8.8.8.8"}
+
+```
+
+<br>
+
+### Opção 3: Via Terminal (Linha de Comando)
+
+Para usuários de Linux, Mac ou Git Bash (cURL):
+
+```bash
+curl -X POST http://localhost:8000/ips \
+     -H "Authorization: Bearer dimensa_aprovou" \
+     -H "Content-Type: application/json" \
+     -d '{"ip": "8.8.8.8"}'
+```
+Para usuários de Windows (PowerShell):
+
+```bash
+$body = @{ ip = "8.8.8.8" } | ConvertTo-Json
+Invoke-RestMethod -Uri "http://localhost:8000/ips" -Method POST -Headers @{ "Authorization" = "Bearer dimensa_aprovou" } -Body $body -ContentType "application/json"
+```
+<br>
 
 `O SECRET_TOKEN padrão para este teste é "dimensa_aprovou", já preenchido no arquivo de exemplo (.env.example).`
 
@@ -88,9 +132,7 @@ Na pasta raiz, existem arquivos com a extensão .http que podem ser usados com a
 
 ## 📌 Decisões Técnicas
 
-Porta 8000: Escolhida para evitar conflitos comuns com serviços de sistema na porta 5000.
-
-Mapeamento de Portas: Escolhida a porta 8000 para evitar conflitos comuns com serviços de sistema na porta 5000. Foi utilizado o mapeamento 8000:5000 no Docker Compose para garantir portabilidade entre diferentes sistemas operacionais.
+Mapeamento de Portas: Foi utilizado o mapeamento 8000:5000 no Docker Compose para evitar conflitos comuns com serviços de sistema na porta 5000 e garantir a portabilidade entre diferentes sistemas operacionais.
 
 Isolamento de Ambiente: O uso de Docker garante que a aplicação rode exatamente da mesma forma em qualquer máquina, eliminando erros.
 
